@@ -4,22 +4,33 @@ using UnityEngine.UI;
 
 public class SanityUpdate : MonoBehaviour
 {
-    [SerializeField] Slider sliderSanity;
+    private float maxSanity = 100f;
+    public float sanity = 100f;
+    [SerializeField] Image barSanity;
 
-    bool losingMind = true;
+    private void Start()
+    {
+        if(sanity > maxSanity)
+            sanity = maxSanity;
+    }
     void Update()
     {
-        if(sliderSanity.value > 0 && losingMind)
-        {
-            StartCoroutine(losingYourMind());
-        }
+        if(sanity > 0)
+            LosingYourMind();
     }
 
-    IEnumerator losingYourMind()
+    public void LosingYourMind()
     {
-        losingMind = false;
-        yield return new WaitForSeconds(10);
-        sliderSanity.value -= 1;
-        losingMind = true;
+        barSanity.fillAmount = Mathf.Clamp01(barSanity.fillAmount + Time.deltaTime * 0.01f);
+    }
+
+    public void LoseSanity(float damage)
+    {
+        sanity -= damage;
+        barSanity.fillAmount = Mathf.Clamp(sanity,0,maxSanity);
+        if(sanity <= 0)
+        {
+            Debug.Log("You have lost your mind!");
+        }
     }
 }

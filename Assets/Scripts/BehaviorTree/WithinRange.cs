@@ -4,15 +4,16 @@ public enum RangeMode { Melee, Ranged, Far }
 
 public class WithinRange : Conditions
 {
-    GameObject target;
+    Transform target;
     Transform self;
     float rangeMelee;
     float rangeRanged;
     float distanceBetweenTarget;
 
     public RangeMode CurrentMode { get; private set; }
+    private RangeMode wantedMode;
 
-    public WithinRange(Transform self, GameObject target, float rangeMelee, float rangeRanged, bool reverseCondition = false)
+    public WithinRange(Transform self, Transform target, float rangeMelee, float rangeRanged, bool reverseCondition = false)
     {
         this.self = self;
         this.target = target;
@@ -41,6 +42,8 @@ public class WithinRange : Conditions
             CurrentMode = RangeMode.Far;
 
         }
-        return CheckForReverse(true);
+
+        bool inWantedRange = (CurrentMode == wantedMode);
+        return CheckForReverse(inWantedRange);
     }
 }

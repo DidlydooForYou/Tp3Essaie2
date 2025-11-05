@@ -1,28 +1,38 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.AI;
 
-public class ComportementBoss : MonoBehaviour
+public class ComportementBoss : BehaviorTree
 {
-    [SerializeField] GameObject player;
-    float meleeRange = 2f;
-    float rangedRange = 8f;
+    [SerializeField] Transform player;
+    [SerializeField] GameObject owner;
+    [SerializeField] GameObject meleeAttackObject;
+    float meleeRange = 15f;
+    float rangedRange = 35f;
+    float attackRange = 3f;
 
-    private List<Conditions> conditions = new List<Conditions>();
-    void Start()
+    private WithinRange withinRangeCondition;
+    protected override void InitializeTree()
     {
-        conditions.Add(new WithinRange(player.transform, player, meleeRange, rangedRange));
+        if (player != null)
+        {
+            withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange);
+
+            var agent = GetComponent<NavMeshAgent>();
+
+            Conditions[] meleeConditions = new Conditions[] { withinRangeCondition };
+
+            var chase = new Chase(player, attackRange, meleeRange, agent, new Conditions[] { withinRangeCondition }, this);
+            var attack = new MeleeAttack(owner, meleeAttackObject, player, attackRange,agent, meleeConditions, this);
+
+            root = new Sequence(new Node[] { chase, attack }, meleeConditions, this);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (player == null) return;
 
         Vector3 pos = transform.position;
 
