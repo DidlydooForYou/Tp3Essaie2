@@ -51,7 +51,7 @@ public class MeleeAttack : Node
         attackTimer -= deltaTime;
 
         float d = Vector3.Distance(owner.transform.position, target.position);
-        Debug.Log("Distance to target: " + d);
+        //Debug.Log("Distance to target: " + d);
         if (d > attackRange + 0.1f)
         {
             Debug.Log("out of range");

@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,13 +23,14 @@ public class GoToTarget : Node
 
     public override void Tick(float deltaTime)
     {
-        if ((agent.transform.position - target.position).magnitude < stoppingDistance)
+        if ((agent.transform.position - target.position).sqrMagnitude < stoppingDistance * stoppingDistance)
         {
+            Debug.Log(target.position);
             FinishAction(true);
         }
         else
         {
-            if (agent.SetDestination(target.position))
+            if (!agent.SetDestination(target.position))
             {
                 FinishAction(false);
             }
