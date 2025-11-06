@@ -38,7 +38,6 @@ public class MeleeAttack : Node
         }
 
         attackObject.SetActive(true);
-
     }
 
     public override void Tick(float deltaTime)
@@ -52,11 +51,10 @@ public class MeleeAttack : Node
         attackTimer -= deltaTime;
 
         float d = Vector3.Distance(owner.transform.position, target.position);
+        Debug.Log("Distance to target: " + d);
         if (d > attackRange + 0.1f)
         {
-            isAttacking = false;
-            attackObject.SetActive(false);
-            agent.isStopped = false;
+            Debug.Log("out of range");
             FinishAction(false);
             return;
         }
@@ -67,5 +65,15 @@ public class MeleeAttack : Node
             attackObject.SetActive(false);
             FinishAction(true);
         }
+    }
+    public override void FinishAction(bool result)
+    {
+        isAttacking = false;
+        attackObject.SetActive(false);
+
+        agent.isStopped = false;
+
+
+        base.FinishAction(result);
     }
 }

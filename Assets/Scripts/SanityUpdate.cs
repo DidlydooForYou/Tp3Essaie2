@@ -17,17 +17,21 @@ public class SanityUpdate : MonoBehaviour
     {
         if(sanity > 0)
             LosingYourMind();
+
+        float fillPercentage = sanity / maxSanity;
+
+        barSanity.fillAmount = fillPercentage;
     }
 
     public void LosingYourMind()
     {
-        barSanity.fillAmount = Mathf.Clamp01(barSanity.fillAmount + Time.deltaTime * 0.01f);
+        barSanity.fillAmount = Mathf.Clamp01(barSanity.fillAmount - Time.deltaTime * 0.01f);
     }
 
     public void LoseSanity(float damage)
     {
         sanity -= damage;
-        barSanity.fillAmount = Mathf.Clamp(sanity,0,maxSanity);
+        sanity = Mathf.Clamp(sanity,0,maxSanity);
         if(sanity <= 0)
         {
             Debug.Log("You have lost your mind!");

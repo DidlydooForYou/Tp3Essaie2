@@ -28,17 +28,14 @@ public class WithinRange : Conditions
 
         if(distanceBetweenTarget <= rangeMelee)
         {
-            Debug.Log("Target is within melee range");
             CurrentMode = RangeMode.Melee;
         }
         else if (distanceBetweenTarget <= rangeRanged && distanceBetweenTarget > rangeMelee)
         {
-            Debug.Log("Target is within ranged range");
             CurrentMode = RangeMode.Ranged;
         }
         else if(distanceBetweenTarget > rangeRanged)
         {
-            Debug.Log("Target needs to dash");
             CurrentMode = RangeMode.Far;
 
         }

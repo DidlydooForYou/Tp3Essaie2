@@ -8,9 +8,10 @@ public class ComportementBoss : BehaviorTree
     [SerializeField] Transform player;
     [SerializeField] GameObject owner;
     [SerializeField] GameObject meleeAttackObject;
+    [SerializeField] GameObject rangedAttackObject;
     float meleeRange = 15f;
     float rangedRange = 35f;
-    float attackRange = 3f;
+    float attackRange = 4.5f;
 
     private WithinRange withinRangeCondition;
     protected override void InitializeTree()
@@ -23,10 +24,11 @@ public class ComportementBoss : BehaviorTree
 
             Conditions[] meleeConditions = new Conditions[] { withinRangeCondition };
 
-            var chase = new Chase(player, attackRange, meleeRange, agent, new Conditions[] { withinRangeCondition }, this);
-            var attack = new MeleeAttack(owner, meleeAttackObject, player, attackRange,agent, meleeConditions, this);
+            var chase = new Chase(player, attackRange, attackRange, agent,null, this);
+            var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange,agent, meleeConditions, this);
+            var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, owner.transform, rangedRange, meleeRange, agent, meleeConditions, this);
 
-            root = new Sequence(new Node[] { chase, attack }, meleeConditions, this);
+            root = new Sequence(new Node[] { chase, meleeAttack,rangedAttack}, meleeConditions, this);
         }
     }
 
