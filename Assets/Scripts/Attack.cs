@@ -30,7 +30,7 @@ public class Attack : Node
                 if (hit.collider.tag == targetTag)
                 {
                     success = true;
-                    hit.collider.gameObject.GetComponent<SanityUpdate>().TakeDamage();
+                    hit.collider.gameObject.GetComponent<SanityUpdate>().LoseSanity(10);
                 }
             }
         }
