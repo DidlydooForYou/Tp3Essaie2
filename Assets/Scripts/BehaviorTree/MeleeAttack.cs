@@ -28,6 +28,15 @@ public class MeleeAttack : Node
     {
         base.ExecuteAction();
 
+        float d = Vector3.Distance(owner.transform.position, target.position);
+
+        if (d > attackRange + 0.1f)
+        {
+            Debug.Log($"MeleeAttack: Target too far ({d:F2} > {attackRange})");
+            FinishAction(false);
+            return;
+        }
+
         isAttacking = true;
         attackTimer = attackDuration;
         var agent = owner.GetComponent<NavMeshAgent>();

@@ -7,14 +7,12 @@ public class Chase : Node
     private Transform target;
     private float stoppingDistance;
     private NavMeshAgent agent;
-    private float meleeRange;
     private float maxChaseDistance = 15f;
-    public Chase(Transform target, float stoppingDistance, float meleeRange, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
+    public Chase(Transform target, float stoppingDistance, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.target = target;
         this.stoppingDistance = stoppingDistance;
         this.agent = agent;
-        this.meleeRange = meleeRange;
     }
 
     public override void ExecuteAction()
@@ -46,7 +44,7 @@ public class Chase : Node
         if (agent.destination != target.position)
             agent.SetDestination(target.position);
 
-        if (agent.remainingDistance <= meleeRange + 0.05f)
+        if (agent.remainingDistance <= stoppingDistance + 0.05f)
         {
             agent.isStopped = true;
             agent.ResetPath();

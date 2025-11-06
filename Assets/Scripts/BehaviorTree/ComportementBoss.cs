@@ -13,22 +13,28 @@ public class ComportementBoss : BehaviorTree
     float rangedRange = 35f;
     float attackRange = 4.5f;
 
-    private WithinRange withinRangeCondition;
     protected override void InitializeTree()
     {
         if (player != null)
         {
-            withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange);
-
             var agent = GetComponent<NavMeshAgent>();
 
-            Conditions[] meleeConditions = new Conditions[] { withinRangeCondition };
+            var withinRangeConditionMelee = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Melee);
+            var withinRangeConditionRanged = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Ranged);
+            //var withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Far);
 
-            var chase = new Chase(player, attackRange, attackRange, agent,null, this);
-            var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange,agent, meleeConditions, this);
-            var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, owner.transform, rangedRange, meleeRange, agent, meleeConditions, this);
+            //melee range
+            var chase = new Chase(player, attackRange, agent,null, this);
+            var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange, agent, null, this);
+            var meleeSequence = new Sequence(new Node[] { chase, meleeAttack }, new Conditions[] { withinRangeConditionMelee }, this);
 
-            root = new Sequence(new Node[] { chase, meleeAttack,rangedAttack}, meleeConditions, this);
+            //ranged range
+            var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, owner.transform, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
+
+            //far range
+
+            //root
+            root = new Sequence(new Node[] { meleeSequence,rangedAttack }, null, this);
         }
     }
 

@@ -10,12 +10,12 @@ public class SanityUpdate : MonoBehaviour
 
     private void Start()
     {
-        if(sanity > maxSanity)
+        if (sanity > maxSanity)
             sanity = maxSanity;
     }
     void Update()
     {
-        if(sanity > 0)
+        if (sanity > 0)
             LosingYourMind();
 
         float fillPercentage = sanity / maxSanity;
@@ -25,14 +25,15 @@ public class SanityUpdate : MonoBehaviour
 
     public void LosingYourMind()
     {
-        barSanity.fillAmount = Mathf.Clamp01(barSanity.fillAmount - Time.deltaTime * 0.01f);
+        sanity -= Time.deltaTime * 0.1f;
+        barSanity.fillAmount = Mathf.Clamp01(barSanity.fillAmount - Time.deltaTime * 0.1f);
     }
 
     public void LoseSanity(float damage)
     {
         sanity -= damage;
-        sanity = Mathf.Clamp(sanity,0,maxSanity);
-        if(sanity <= 0)
+        sanity = Mathf.Clamp(sanity, 0, maxSanity);
+        if (sanity <= 0)
         {
             Debug.Log("You have lost your mind!");
         }

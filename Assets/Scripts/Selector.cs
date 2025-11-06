@@ -20,13 +20,14 @@ public class Selector : Node
     }
     public override void FinishAction(bool result)
     {
-        base.FinishAction(result);
         if (result)
         {
+            index = 0;
             base.FinishAction(true);
         }
         else if (index == children.Length - 1)
         {
+            index = 0;
             base.FinishAction(false);
         }
         else
