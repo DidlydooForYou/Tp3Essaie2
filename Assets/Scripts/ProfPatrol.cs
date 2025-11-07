@@ -6,53 +6,53 @@ public class BadPatrol : BehaviorTree
     [SerializeField] Transform[] targets;
     [SerializeField] GameObject player;
 
-    Interrupt interruptPatrol;
-    Interrupt interruptAttack;
+    Interrupt interrupt;
+
     protected override void InitializeTree()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
 
-        var goTo1 = new GoToTarget(agent, targets[0], 2, null, this);
-        var wait1 = new Wait(2, null, this);
-        var goTo2 = new GoToTarget(agent, targets[1], 2, null, this);
+        //chaseConditions
+        HasVision HVChase = new HasVision(gameObject.transform, player, 60, false);
+        InRange IRChase = new InRange(gameObject.transform, player, 20, false);
 
-        Conditions[] chaseConditions =
+        //attackCondition
+        HasVision HVAttack = new HasVision(gameObject.transform, player, 60, false);
+        InRange IRAttack = new InRange(gameObject.transform, player, 2, false);
+
+
+        Conditions[] patrolConditions =
         {
-            new HasVision(gameObject.transform, player, 60, false),
-            new InRange(gameObject.transform, player, 20, false)
+            new HasVision(gameObject.transform, player, 60, true)
         };
 
-        Conditions[] attackConditions =
-        {
-            new HasVision(gameObject.transform, player, 60, false),
-            new InRange(gameObject.transform, player, 2, false)
-        };
+        var wait = new Wait(2, patrolConditions, this);
+        var goTo1 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, patrolConditions, this);
+        var goTo2 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, patrolConditions, this);
+        var goTo3 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, patrolConditions, this);
+        var goTo4 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, patrolConditions, this);
+        var goTo5 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, patrolConditions, this);
 
-        var chase = new GoToTarget(agent, player.transform, 1, chaseConditions, this);
-        var attack = new Attack(Vector3.forward, Vector3.zero, new Vector3(1, 1, 1), player.tag, gameObject.transform, attackConditions, this);
+        var chase = new GoToTarget(agent, player.transform, 1, new Conditions[] {HVChase, IRChase}, this);
+        var attack = new Attack(Vector3.forward, Vector3.zero, new Vector3(1, 1, 1), player.tag, gameObject.transform, new Conditions[] {HVAttack, IRAttack}, this);
 
         var meleeSequence = new Sequence(new Node[] { chase, attack }, null, this);
-        var patrolSquence = new Sequence(new Node[] { goTo1, wait1, goTo2, wait1 }, null, this);
+        var patrolSquence = new Sequence(new Node[] { goTo1, wait, goTo2, wait, goTo3, wait, goTo4, wait, goTo5, wait }, null, this);
 
-        root = new Selector(new Node[] {patrolSquence, meleeSequence}, null, this);
+        root = new Selector(new Node[] { meleeSequence, patrolSquence }, null, this);
 
-        interruptPatrol = new Interrupt(new Conditions[] { new HasVision(gameObject.transform, player, 15) }, this);
-
-        interruptAttack = new Interrupt(new Conditions[] { new InRange(gameObject.transform, player, 20, true) }, this);
+        interrupt = new Interrupt(patrolConditions, this);
+        interrupt = new Interrupt( new Conditions[] {HVChase,IRChase,HVAttack,IRAttack} , this);
     }
 
     private void OnDisable()
     {
-        interruptPatrol.Stop();
-        interruptAttack.Stop();
+        interrupt.Stop();
     }
 
     private void OnEnable()
     {
-        if (interruptAttack != null && interruptPatrol != null)
-        {
-            interruptAttack.Start();
-            interruptPatrol.Start();
-        }
+        if(interrupt  != null) 
+            interrupt.Start();
     }
 }
