@@ -6,29 +6,39 @@ using UnityEngine.AI;
 public class ComportementBoss : BehaviorTree
 {
     [SerializeField] Transform player;
+    [SerializeField] Transform firePoint;
+
     [SerializeField] GameObject owner;
     [SerializeField] GameObject meleeAttackObject;
     [SerializeField] GameObject rangedAttackObject;
+
     float meleeRange = 15f;
     float rangedRange = 35f;
     float attackRange = 4.5f;
+    float offsetPlayer = 5f;
 
-    private WithinRange withinRangeCondition;
     protected override void InitializeTree()
     {
         if (player != null)
         {
-            withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange);
-
             var agent = GetComponent<NavMeshAgent>();
 
-            Conditions[] meleeConditions = new Conditions[] { withinRangeCondition };
+            var withinRangeConditionMelee = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Melee);
+            var withinRangeConditionRanged = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Ranged);
+            var withinRangeConditionFar = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Far);
+            //var withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Far);
 
-            var chase = new Chase(player, attackRange, attackRange, agent,null, this);
-            var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange,agent, meleeConditions, this);
-            var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, owner.transform, rangedRange, meleeRange, agent, meleeConditions, this);
+            //melee range
+            var chase = new Chase(player, attackRange, agent, meleeRange, new Conditions[] { withinRangeConditionMelee }, this);
+            var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange, agent,new Conditions[] {withinRangeConditionMelee}, this);
+            var meleeSequence = new Sequence(new Node[] { chase, meleeAttack }, null, this);
+            //ranged range
+            var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, firePoint, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
 
-            root = new Sequence(new Node[] { chase, meleeAttack,rangedAttack}, meleeConditions, this);
+            //far range
+            var teleport = new Teleport(owner.transform, player,rangedRange,offsetPlayer, agent, new Conditions[] { withinRangeConditionFar }, this);
+            //root
+            root = new Selector(new Node[] { meleeSequence, rangedAttack, teleport }, null, this);
         }
     }
 

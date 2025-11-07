@@ -26,7 +26,14 @@ public class MeleeAttack : Node
 
     override public void ExecuteAction()
     {
-        base.ExecuteAction();
+
+        float d = Vector3.Distance(owner.transform.position, target.position);
+
+        if (d > attackRange + 0.1f)
+        {
+            FinishAction(false);
+            return;
+        }
 
         isAttacking = true;
         attackTimer = attackDuration;
@@ -36,6 +43,7 @@ public class MeleeAttack : Node
             agent.isStopped = true;
             agent.ResetPath();
         }
+        base.ExecuteAction();
 
         attackObject.SetActive(true);
     }
@@ -54,9 +62,7 @@ public class MeleeAttack : Node
         //Debug.Log("Distance to target: " + d);
         if (d > attackRange + 0.1f)
         {
-            Debug.Log("out of range");
             FinishAction(false);
-            return;
         }
 
         if (attackTimer <= 0f)
@@ -72,7 +78,6 @@ public class MeleeAttack : Node
         attackObject.SetActive(false);
 
         agent.isStopped = false;
-
 
         base.FinishAction(result);
     }

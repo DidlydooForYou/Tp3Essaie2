@@ -13,34 +13,38 @@ public class WithinRange : Conditions
     public RangeMode CurrentMode { get; private set; }
     private RangeMode wantedMode;
 
-    public WithinRange(Transform self, Transform target, float rangeMelee, float rangeRanged, bool reverseCondition = false)
+    public WithinRange(Transform self, Transform target, float rangeMelee, float rangeRanged, RangeMode wantedMode, bool reverseCondition = false)
     {
         this.self = self;
         this.target = target;
         this.rangeMelee = rangeMelee;
         this.rangeRanged = rangeRanged;
+        this.wantedMode = wantedMode;
         this.reverseCondition = reverseCondition;
     }
 
     public override bool Evaluate()
     {
-        distanceBetweenTarget = (target.transform.position - self.position).magnitude;
+        distanceBetweenTarget = (target.position - self.position).magnitude;
 
-        if(distanceBetweenTarget <= rangeMelee)
+        if (distanceBetweenTarget <= rangeMelee)
         {
             CurrentMode = RangeMode.Melee;
+            wantedMode = RangeMode.Melee;
         }
-        else if (distanceBetweenTarget <= rangeRanged && distanceBetweenTarget > rangeMelee)
+        else if (distanceBetweenTarget <= rangeRanged)
         {
             CurrentMode = RangeMode.Ranged;
+            wantedMode = RangeMode.Ranged;
         }
-        else if(distanceBetweenTarget > rangeRanged)
+        else
         {
             CurrentMode = RangeMode.Far;
-
+            wantedMode = RangeMode.Far;
         }
 
         bool inWantedRange = (CurrentMode == wantedMode);
+        Debug.Log($"WithinRange - Distance: {distanceBetweenTarget:F1}, Current: {CurrentMode}, Wanted: {wantedMode}, Match: {inWantedRange}");
         return CheckForReverse(inWantedRange);
     }
 }

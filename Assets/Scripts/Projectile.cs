@@ -21,9 +21,10 @@ public class Projectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        sanity = GetComponent<SanityUpdate>();
+        sanity = other.GetComponent<SanityUpdate>();
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Projectile hit the player!");
             sanity.LoseSanity(damage);
         }
 
