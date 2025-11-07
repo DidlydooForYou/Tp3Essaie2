@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.UI.GridLayoutGroup;
@@ -8,6 +9,9 @@ public class Teleport : Node
     private Transform target;
     private float rangeTeleport;
     private float offsetPlayer;
+
+    float cooldown = 4f;
+    float nextUseTime = 0f;
 
     private NavMeshAgent agent;
 
@@ -22,18 +26,25 @@ public class Teleport : Node
 
     public override void ExecuteAction()
     {
-        float d = Vector3.Distance(self.transform.position, target.position);
-        if (d < rangeTeleport)
+
+        if (Time.time < nextUseTime)
         {
             FinishAction(false);
             return;
         }
+
         Vector3 teleportPos = target.position - target.forward * offsetPlayer;
 
         if (agent)
         {
             agent.Warp(teleportPos);
         }
+        else
+        {
+            self.position = teleportPos;
+        }
+
+        nextUseTime = Time.time + cooldown;
 
         base.ExecuteAction();
     }

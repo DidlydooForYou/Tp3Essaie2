@@ -65,6 +65,11 @@ public class MeleeAttack : Node
             FinishAction(false);
         }
 
+        Vector3 to = target.position - owner.transform.position;
+        to.y = 0f;
+        if (to.sqrMagnitude > 0.001f)
+            owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation, Quaternion.LookRotation(to), 10f * deltaTime);
+
         if (attackTimer <= 0f)
         {
             isAttacking = false;
