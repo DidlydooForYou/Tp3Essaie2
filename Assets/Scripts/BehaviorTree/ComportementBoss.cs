@@ -15,6 +15,7 @@ public class ComportementBoss : BehaviorTree
     float meleeRange = 15f;
     float rangedRange = 35f;
     float attackRange = 4.5f;
+    float offsetPlayer = 5f;
 
     protected override void InitializeTree()
     {
@@ -24,6 +25,7 @@ public class ComportementBoss : BehaviorTree
 
             var withinRangeConditionMelee = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Melee);
             var withinRangeConditionRanged = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Ranged);
+            var withinRangeConditionFar = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Far);
             //var withinRangeCondition = new WithinRange(transform, player, meleeRange, rangedRange, RangeMode.Far);
 
             //melee range
@@ -34,9 +36,9 @@ public class ComportementBoss : BehaviorTree
             var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, firePoint, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
 
             //far range
-
+            var teleport = new Teleport(owner.transform, player,rangedRange,offsetPlayer, agent, new Conditions[] { withinRangeConditionFar }, this);
             //root
-            root = new Selector(new Node[] { meleeSequence, rangedAttack }, null, this);
+            root = new Selector(new Node[] { meleeSequence, rangedAttack, teleport }, null, this);
         }
     }
 
