@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CameraPerso
   - Ennemi
+  - Tableau
+  - Trap
   layers:
   - Default
   - TransparentFX

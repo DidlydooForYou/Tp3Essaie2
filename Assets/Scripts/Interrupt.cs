@@ -12,7 +12,7 @@ public class Interrupt
 
     CancellationTokenSource cts;
 
-    float cooldown;
+    float cooldown; 
     float lastInterruptTime = -10f;
 
     public Interrupt(Conditions[] conditions, BehaviorTree BT)
@@ -29,7 +29,7 @@ public class Interrupt
         while (!token.IsCancellationRequested)
         {
             for (int index = 0; index < conditions.Length; index++)
-            {
+            {                
                 bool current = conditions[index].Evaluate();
 
                 if (!conditionState[index] && current)
