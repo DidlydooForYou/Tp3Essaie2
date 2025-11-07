@@ -25,7 +25,6 @@ public class GoToTarget : Node
     {
         if ((agent.transform.position - target.position).sqrMagnitude < stoppingDistance * stoppingDistance)
         {
-            Debug.Log(target.position);
             FinishAction(true);
         }
         else
