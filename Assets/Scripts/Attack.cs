@@ -19,8 +19,6 @@ public class Attack : Node
 
     public override void ExecuteAction()
     {
-        base.ExecuteAction();
-
         RaycastHit[] hits = Physics.BoxCastAll(self.position + originOffset, range / 2, self.forward);
         bool success = false;
         if (hits.Length > 0)
@@ -31,8 +29,11 @@ public class Attack : Node
                 {
                     success = true;
                     hit.collider.gameObject.GetComponent<SanityUpdate>().LoseSanity(10);
+                    FinishAction(success);
                 }
             }
         }
+
+        base.ExecuteAction();
     }
 }

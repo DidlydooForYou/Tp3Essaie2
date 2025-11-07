@@ -7,14 +7,14 @@ abstract public class BehaviorTree : MonoBehaviour
     public Node activeNode;
 
     abstract protected void InitializeTree();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         InitializeTree();
         EvaluateTree();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (activeNode != null)

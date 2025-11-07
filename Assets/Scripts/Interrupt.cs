@@ -12,6 +12,7 @@ public class Interrupt
 
     CancellationTokenSource cts;
 
+    public bool Triggered { get; private set; }
     public Interrupt(Conditions[] conditions, BehaviorTree BT)
     {
         this.conditions = conditions;
@@ -27,12 +28,14 @@ public class Interrupt
         {
             for (int index = 0; index < conditions.Length; index++)
             {
-                if (conditions[index].Evaluate() != conditionState[index])
+                bool current = conditions[index].Evaluate();
+
+                if (current == true && conditionState[index] == false)
                 {
                     BT.Interupt();
-                    UpdateState();
-                    break;
                 }
+
+                conditionState[index] = current;
             }
             await Task.Delay(100);
         }
@@ -48,6 +51,7 @@ public class Interrupt
 
     public void Start()
     {
+        Triggered = false;
         cts = new CancellationTokenSource();
         UpdateState();
         CheckConditions(cts.Token);
@@ -55,6 +59,12 @@ public class Interrupt
 
     public void Stop()
     {
+        Triggered = false;
         cts.Cancel();
+    }
+
+    public void ResetTrigger()   
+    {
+        Triggered = false;
     }
 }

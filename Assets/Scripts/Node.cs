@@ -38,6 +38,7 @@ public abstract class Node
         if (!EvaluateCondition())
         {
             FinishAction(false);
+            return;
         }
         BT.activeNode = this;
     }

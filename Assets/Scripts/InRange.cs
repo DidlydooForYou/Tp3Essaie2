@@ -4,23 +4,23 @@ public class InRange : Conditions
 {
     Transform self;
     GameObject target;
-    float range = 10;
+    float range;
 
-    public InRange(Transform self, GameObject target, bool reverseConditions = false)
+    public InRange(Transform self, GameObject target, int range, bool reverseConditions = false)
     {
         this.self = self;
         this.target = target;
+        this.range = range;
         this.reverseCondition = reverseConditions;
     }
 
     public override bool Evaluate()
     {
-        float distance = Vector3.Distance(target.transform.position, self.position);
+        float distance = Vector3.Distance(self.position, target.transform.position);
 
-        if(distance > range)
-            return CheckForReverse(false);
+        bool inRange = distance <= range;
 
-        return CheckForReverse(true);
+        return CheckForReverse(inRange);
     }
 
 }

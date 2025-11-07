@@ -17,8 +17,8 @@ public class GoToTarget : Node
 
     public override void ExecuteAction()
     {
-        base.ExecuteAction();
         agent.SetDestination(target.position);
+        base.ExecuteAction();
     }
 
     public override void Tick(float deltaTime)

@@ -22,15 +22,18 @@ public class HasVision : Conditions
         float angleToTarget = Vector3.Angle(self.forward, direction);
 
         if (angleToTarget > visionAngle)
+        {
             return CheckForReverse(false);
+        }
 
-        if (Physics.Raycast(self.position, direction, out RaycastHit hit))
+        if (Physics.Raycast(self.transform.position, direction, out RaycastHit hit))
         {
             if (hit.collider.gameObject != target)
             {
                 return CheckForReverse(false);
             }
         }
+        Debug.Log("Je vois");
         return CheckForReverse(true);
     }
 }
