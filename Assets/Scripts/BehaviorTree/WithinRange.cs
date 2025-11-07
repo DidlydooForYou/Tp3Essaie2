@@ -30,14 +30,17 @@ public class WithinRange : Conditions
         if (distanceBetweenTarget <= rangeMelee)
         {
             CurrentMode = RangeMode.Melee;
+            wantedMode = RangeMode.Melee;
         }
         else if (distanceBetweenTarget <= rangeRanged)
         {
             CurrentMode = RangeMode.Ranged;
+            wantedMode = RangeMode.Ranged;
         }
         else
         {
             CurrentMode = RangeMode.Far;
+            wantedMode = RangeMode.Far;
         }
 
         bool inWantedRange = (CurrentMode == wantedMode);

@@ -17,9 +17,6 @@ public class Wait : Node
     }
     public override void Tick(float deltaTime)
     {
-        if (interrupted)
-            return;
-
         timer += deltaTime;
         if (timer >= secondsToWait)
         {

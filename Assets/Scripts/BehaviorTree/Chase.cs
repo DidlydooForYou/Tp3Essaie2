@@ -7,33 +7,48 @@ public class Chase : Node
     private Transform target;
     private float stoppingDistance;
     private NavMeshAgent agent;
-    private float maxChaseDistance = 15f;
-    public Chase(Transform target, float stoppingDistance, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
+    private float maxChaseDistance;
+
+    public Chase(Transform target, float stoppingDistance, NavMeshAgent agent, float maxChaseDistance, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.target = target;
         this.stoppingDistance = stoppingDistance;
         this.agent = agent;
+        this.maxChaseDistance = maxChaseDistance;
     }
 
     public override void ExecuteAction()
     {
-        base.ExecuteAction();
-        if (agent && target)
+        if (!agent || !target)
         {
-            agent.isStopped = false;
-            agent.SetDestination(target.position);
-        }
-    }
-
-    public override void Tick(float deltaTime)
-    {
-        if (agent.remainingDistance > maxChaseDistance)
-        {
-            Debug.Log("out of bounds");
             FinishAction(false);
             return;
         }
 
+        float d = Vector3.Distance(agent.transform.position, target.position);
+        if (d > maxChaseDistance)
+        {
+            FinishAction(false);
+            return;
+        }
+
+        base.ExecuteAction();
+
+        agent.isStopped = false;
+        agent.SetDestination(target.position);
+    }
+
+    public override void Tick(float deltaTime)
+    {
+        float d = Vector3.Distance(agent.transform.position, target.position);
+        if (d > maxChaseDistance)
+        {
+            Debug.Log("out of bounds");
+            agent.isStopped = true;
+            FinishAction(false);
+            return;
+        }
+        Debug.Log(agent.remainingDistance);
         if (!agent || !target)
         {
             FinishAction(false);
@@ -44,7 +59,7 @@ public class Chase : Node
         if (agent.destination != target.position)
             agent.SetDestination(target.position);
 
-        if (agent.remainingDistance <= stoppingDistance + 0.05f)
+        if (d <= stoppingDistance + 0.05f)
         {
             agent.isStopped = true;
             agent.ResetPath();
@@ -57,7 +72,7 @@ public class Chase : Node
 
     public override void FinishAction(bool result)
     {
-        agent.SetDestination(agent.transform.position);
+        agent.ResetPath();
         base.FinishAction(result);
     }
 

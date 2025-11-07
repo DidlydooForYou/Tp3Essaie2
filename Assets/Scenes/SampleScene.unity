@@ -225,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6836632766003872550, guid: a2dfe588a42016e40892b72d31fd1cf6, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7066689326610945622, guid: a2dfe588a42016e40892b72d31fd1cf6, type: 3}
       propertyPath: m_IsActive
@@ -1271,6 +1271,10 @@ PrefabInstance:
     - target: {fileID: 6871196877690253203, guid: 4cb42b9a376de2f468244fb92b31c11d, type: 3}
       propertyPath: m_Name
       value: DemonPig
+      objectReference: {fileID: 0}
+    - target: {fileID: 6871196877690253203, guid: 4cb42b9a376de2f468244fb92b31c11d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
