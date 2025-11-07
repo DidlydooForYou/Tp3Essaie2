@@ -6,15 +6,18 @@ using UnityEngine.AI;
 public class ComportementBoss : BehaviorTree
 {
     [SerializeField] Transform player;
-    [SerializeField] Transform firePoint;
 
     [SerializeField] GameObject owner;
+    [SerializeField] Transform firePoint;
+
     [SerializeField] GameObject meleeAttackObject;
     [SerializeField] GameObject rangedAttackObject;
+    [SerializeField] GameObject shockwaveAttackObject;
 
     float meleeRange = 15f;
     float rangedRange = 1000f;
     float attackRange = 4.5f;
+    float attackRangeShockwave = 10f;
     float offsetPlayer = 5f;
 
     protected override void InitializeTree()
@@ -30,6 +33,7 @@ public class ComportementBoss : BehaviorTree
             var chase = new Chase(player, attackRange, agent, meleeRange, new Conditions[] { withinRangeConditionMelee }, this);
             var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange, agent,new Conditions[] {withinRangeConditionMelee}, this);
             var meleeSequence = new Sequence(new Node[] { chase, meleeAttack }, null, this);
+            var shockwaveAttack = new ShockwaveAttack(owner, shockwaveAttackObject, player, attackRangeShockwave, agent, new Conditions[] { withinRangeConditionMelee }, this);
             //ranged range
             var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, firePoint, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
             var teleport = new Teleport(owner.transform, player,meleeRange,offsetPlayer, agent, new Conditions[] { withinRangeConditionRanged }, this);

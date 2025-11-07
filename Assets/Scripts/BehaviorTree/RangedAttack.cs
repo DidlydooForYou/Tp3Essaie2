@@ -15,9 +15,9 @@ public class RangedAttack : Node
 
     private NavMeshAgent agent;
 
-    private float cooldown = 1f;
     private float attackDuration = .5f;
     private float attackTimer = 0f;
+    private float cooldown = 1f;
     private float nextUseTime = 0f;
 
     private float damage = 10f;
