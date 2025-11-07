@@ -12,6 +12,9 @@ public class Interrupt
 
     CancellationTokenSource cts;
 
+    float cooldown; 
+    float lastInterruptTime = -10f;
+
     public Interrupt(Conditions[] conditions, BehaviorTree BT)
     {
         this.conditions = conditions;
@@ -26,16 +29,21 @@ public class Interrupt
         while (!token.IsCancellationRequested)
         {
             for (int index = 0; index < conditions.Length; index++)
-            {
-                if (conditions[index].Evaluate() != conditionState[index])
+            {                
+                bool current = conditions[index].Evaluate();
+
+                if (!conditionState[index] && current)
                 {
-                    if (conditions[index].Evaluate() == false) 
+                    if (Time.time - lastInterruptTime >= cooldown)
                     {
-                        BT.Interupt(); 
+                        lastInterruptTime = Time.time;
+                        BT.Interupt();
                     }
                     UpdateState();
                     break;
                 }
+
+                conditionState[index] = current;
             }
             await Task.Delay(100);
         }

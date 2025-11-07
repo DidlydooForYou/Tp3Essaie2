@@ -19,7 +19,7 @@ public class RecolterTableau : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("Painting"))
+            if (hit.collider.CompareTag("Tableau"))
             {
                 paintingCount++;
                 if (paintingCount <= 8)
