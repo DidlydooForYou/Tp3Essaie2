@@ -8,6 +8,9 @@ public class Attack : Node
     Vector3 range;
     Vector3 originOffset;
     Vector3 direction;
+    private float attackDuration = 1f;
+    private float attackTimer = 0f;
+    private bool isAttacking = false;
     public Attack(Vector3 direction, Vector3 originOffset, Vector3 range, string targetTag, Transform self, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.self = self;
@@ -19,6 +22,8 @@ public class Attack : Node
 
     public override void ExecuteAction()
     {
+        isAttacking = true;
+        attackTimer = attackDuration;
         RaycastHit[] hits = Physics.BoxCastAll(self.position + originOffset, range / 2, self.forward);
         bool success = false;
         if (hits.Length > 0)
@@ -35,5 +40,24 @@ public class Attack : Node
         }
 
         base.ExecuteAction();
+    }
+    public override void Tick(float deltaTime)
+    {
+
+        if (!isAttacking)
+        {
+            FinishAction(false);
+            return;
+        }
+        if (attackTimer <= 0f)
+        {
+            isAttacking = false;
+            FinishAction(true);
+        }
+    }
+
+    public override void FinishAction(bool result)
+    {
+        base.FinishAction(result);
     }
 }

@@ -31,7 +31,7 @@ public class BadPatrol : BehaviorTree
         var goTo5 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] { HVPatrol }, this);
 
         var chase = new GoToPlayer(agent, player.transform, 20, 4, 2 , new Conditions[] {HVChase, IRChase}, this);
-        var attack = new Attack(Vector3.forward, Vector3.zero, new Vector3(1, 1, 1), player.tag, gameObject.transform, new Conditions[] {HVAttack, IRAttack}, this);
+        var attack = new Attack(Vector3.forward, Vector3.zero, new Vector3(1, 1, 1), player.tag, gameObject.transform, new Conditions[] { HVAttack, IRAttack }, this);
 
         var meleeSequence = new Sequence(new Node[] { chase, attack }, null, this);
         var patrolSquence = new Sequence(new Node[] { goTo1, wait, goTo2, wait, goTo3, wait, goTo4, wait, goTo5, wait }, null, this);
