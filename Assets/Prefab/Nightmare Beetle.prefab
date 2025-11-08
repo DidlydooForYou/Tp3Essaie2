@@ -8115,8 +8115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 3593589792392218230, guid: dd776516a0cad8146be39d0b41c48f51, type: 3}
   owner: {fileID: 1987720806421918}
+  firePoint: {fileID: 6939131912776435083}
   meleeAttackObject: {fileID: 7066689326610945622}
   rangedAttackObject: {fileID: 746161822385838458, guid: 59c4ffe10ee91714a8c21560771e593c, type: 3}
+  shockwaveAttackObject: {fileID: 7478731271839673279, guid: 4d3c8045dd8857a4b8d34c2361c61045, type: 3}
 --- !u!1 &1819905211015288626
 GameObject:
   m_ObjectHideFlags: 0

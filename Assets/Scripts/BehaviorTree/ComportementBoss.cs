@@ -33,13 +33,13 @@ public class ComportementBoss : BehaviorTree
             var chase = new Chase(player, attackRange, agent, meleeRange, new Conditions[] { withinRangeConditionMelee }, this);
             var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange, agent,new Conditions[] {withinRangeConditionMelee}, this);
             var meleeSequence = new Sequence(new Node[] { chase, meleeAttack }, null, this);
-            var shockwaveAttack = new ShockwaveAttack(owner, shockwaveAttackObject, player, attackRangeShockwave, agent, new Conditions[] { withinRangeConditionMelee }, this);
+            var shockwaveAttack = new ShockwaveAttack(owner, shockwaveAttackObject, player, attackRangeShockwave, agent,null, this);
             //ranged range
             var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, firePoint, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
             var teleport = new Teleport(owner.transform, player,meleeRange,offsetPlayer, agent, new Conditions[] { withinRangeConditionRanged }, this);
             var randomPattern = new RandomSelector(new Node[] { rangedAttack,rangedAttack,rangedAttack,rangedAttack, rangedAttack, rangedAttack, rangedAttack, rangedAttack,rangedAttack, teleport }, null, this);
             //root
-            root = new Selector(new Node[] { meleeSequence, randomPattern }, null, this);
+            root = new Selector(new Node[] { shockwaveAttack, meleeSequence, randomPattern }, null, this);
         }
     }
 

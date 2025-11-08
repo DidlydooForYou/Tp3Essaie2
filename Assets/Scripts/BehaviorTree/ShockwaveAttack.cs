@@ -8,14 +8,14 @@ public class ShockwaveAttack : Node
     Transform target;
 
     private float attackDuration = 1f;
-    private float attackTimer = 0f;
+    private float attackTimer = 5f;
     private bool isAttacking = false;
     private float attackRange;
     private NavMeshAgent agent;
+    private float cooldown;
 
     public float damage = 10f;
 
-    private float cooldown = 1f;
     private float nextUseTime = 0f;
 
     public ShockwaveAttack(GameObject owner, GameObject attackObject, Transform target, float attackRange, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
@@ -29,6 +29,49 @@ public class ShockwaveAttack : Node
 
     public override void ExecuteAction()
     {
+        Debug.Log(nextUseTime);
+        Debug.Log(Time.time);
+        if (Time.time < nextUseTime)
+        {
+            FinishAction(false);
+            return;
+        }
+
+        nextUseTime = Time.time + cooldown;
+
+        isAttacking = true;
+        attackTimer = attackDuration;
+        var shockwave = GameObject.Instantiate(attackObject, owner.transform.position, Quaternion.identity);
+
         base.ExecuteAction();
+
+        var agent = owner.GetComponent<NavMeshAgent>();
+        if (agent)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
+    }
+
+    public override void Tick(float deltaTime)
+    {
+        if (isAttacking)
+        {
+            attackTimer -= deltaTime;
+            if (attackTimer <= 0f)
+            {
+                isAttacking = false;
+                FinishAction(true);
+            }
+        }
+    }
+
+    public override void FinishAction(bool result)
+    {
+        if (agent)
+        {
+            agent.isStopped = false;
+        }
+        base.FinishAction(result);
     }
 }

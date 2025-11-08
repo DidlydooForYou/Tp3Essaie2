@@ -4,6 +4,7 @@ using UnityEngine;
 public class DamageOverTime : MonoBehaviour
 {
     [SerializeField] float damagePerSecond = 10f;
+    [SerializeField] float lifeTime = 5f;
     public GameObject player;
 
     List<SanityUpdate> affectedPlayers = new List<SanityUpdate>();
@@ -22,12 +23,17 @@ public class DamageOverTime : MonoBehaviour
 
     private void Update()
     {
-        foreach (var playerHealth in affectedPlayers)
+        lifeTime -= Time.deltaTime;
+        foreach (var playerSanity in affectedPlayers)
         {
-            if (playerHealth != null)
+            if (playerSanity != null)
             {
-                playerHealth.LoseSanity(damagePerSecond * Time.deltaTime);
+                playerSanity.LoseSanity(damagePerSecond * Time.deltaTime);
             }
+        }
+        if (lifeTime <= 0f)
+        {
+            Destroy(gameObject);
         }
     }
 }

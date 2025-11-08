@@ -37,7 +37,6 @@ public class WithinRange : Conditions
         }
 
         bool inWantedRange = (CurrentMode == wantedMode);
-        Debug.Log($"WithinRange - Distance: {distanceBetweenTarget:F1}, Current: {CurrentMode}, Wanted: {wantedMode}, Match: {inWantedRange}");
         return CheckForReverse(inWantedRange);
     }
 }
