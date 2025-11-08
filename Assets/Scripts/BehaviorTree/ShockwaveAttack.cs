@@ -16,15 +16,16 @@ public class ShockwaveAttack : Node
 
     public float damage = 10f;
 
-    private float nextUseTime = 0f;
+    private float nextUseTime = 20f;
 
-    public ShockwaveAttack(GameObject owner, GameObject attackObject, Transform target, float attackRange, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
+    public ShockwaveAttack(GameObject owner, GameObject attackObject, Transform target, float attackRange,float cooldown, NavMeshAgent agent, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.attackObject = attackObject;
         this.owner = owner;
         this.target = target;
         this.attackRange = attackRange;
         this.agent = agent;
+        this.cooldown = cooldown;
     }
 
     public override void ExecuteAction()
@@ -41,7 +42,7 @@ public class ShockwaveAttack : Node
 
         isAttacking = true;
         attackTimer = attackDuration;
-        var shockwave = GameObject.Instantiate(attackObject, owner.transform.position, Quaternion.identity);
+        var shockwave = GameObject.Instantiate(attackObject, target.position, Quaternion.identity);
 
         base.ExecuteAction();
 

@@ -18,6 +18,7 @@ public class ComportementBoss : BehaviorTree
     float rangedRange = 1000f;
     float attackRange = 4.5f;
     float attackRangeShockwave = 10f;
+    float CDShockwave = 20f;
     float offsetPlayer = 5f;
 
     protected override void InitializeTree()
@@ -33,7 +34,7 @@ public class ComportementBoss : BehaviorTree
             var chase = new Chase(player, attackRange, agent, meleeRange, new Conditions[] { withinRangeConditionMelee }, this);
             var meleeAttack = new MeleeAttack(owner, meleeAttackObject, player, attackRange, agent,new Conditions[] {withinRangeConditionMelee}, this);
             var meleeSequence = new Sequence(new Node[] { chase, meleeAttack }, null, this);
-            var shockwaveAttack = new ShockwaveAttack(owner, shockwaveAttackObject, player, attackRangeShockwave, agent,null, this);
+            var shockwaveAttack = new ShockwaveAttack(owner, shockwaveAttackObject, player, attackRangeShockwave, CDShockwave, agent,null, this);
             //ranged range
             var rangedAttack = new RangedAttack(owner, rangedAttackObject, player, firePoint, rangedRange, meleeRange, agent, new Conditions[] {withinRangeConditionRanged}, this);
             var teleport = new Teleport(owner.transform, player,meleeRange,offsetPlayer, agent, new Conditions[] { withinRangeConditionRanged }, this);
