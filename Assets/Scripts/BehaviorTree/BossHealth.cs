@@ -11,11 +11,6 @@ public class BossHealth : MonoBehaviour
         health = maxHealth;
     }
 
-    void Update()
-    {
-        
-    }
-
     public void TakeDamage(float damage)
     {
         health -= damage;
