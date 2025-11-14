@@ -9,71 +9,51 @@ public class GoToPlayer : Node
     NavMeshAgent agent;
     bool isPaused;
     float stoppingDistance;
+    Animator anim;
 
     public float timer = 0;
 
-    public GoToPlayer(NavMeshAgent agent, Transform target, float surcharge, float pause, float stoppingDistance, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
+    public GoToPlayer(NavMeshAgent agent, Transform target, float surcharge, float pause, float stoppingDistance, Animator anim, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.agent = agent;
         this.target = target;
         this.surcharge = surcharge;
         this.stoppingDistance = stoppingDistance;
         this.pause = pause;
+        this.anim = anim;
     }
 
     public override void ExecuteAction()
     {
-        if (!isPaused)
+        if (!EvaluateConditions())
         {
-            agent.SetDestination(target.position);
-            base.ExecuteAction();
+            FinishAction(false);
+            return;
         }
+
+        BT.activeNode = this;
+
+        agent.speed = 50f;
+        agent.acceleration = 100f;
+        agent.angularSpeed = 1000f;
+        agent.autoBraking = false;
+
+        agent.SetDestination(target.position);
+        anim.SetBool("IsRunning", true);
     }
 
     public override void Tick(float deltaTime)
     {
-        Debug.Log(timer);
-        timer += deltaTime;
-
-        if (!isPaused)
-        {
-            if (timer >= surcharge)
-            {
-                agent.isStopped = true;
-                agent.velocity = Vector3.zero;
-                timer = 0;
-                isPaused = true;
-                return;
-            }
-        }
-        if (isPaused)
-        {
-            if(timer >= pause)
-            {
-                agent.isStopped = false;
-                agent.SetDestination(target.position);
-                timer = 0;
-                isPaused = false;
-                return;
-            }
-        }
-
-        if ((agent.transform.position - target.position).sqrMagnitude < stoppingDistance * stoppingDistance)
+        if (!agent.pathPending && agent.remainingDistance <= stoppingDistance)
         {
             FinishAction(true);
-        }
-        else
-        {
-            if (!agent.SetDestination(target.position))
-            {
-                FinishAction(false);
-            }
         }
     }
 
     public override void FinishAction(bool result)
     {
         agent.SetDestination(agent.transform.position);
+        anim.SetBool("IsRunning", false);
         base.FinishAction(result);
     }
 

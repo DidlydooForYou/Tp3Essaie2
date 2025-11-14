@@ -8,38 +8,47 @@ public class GoToTarget : Node
     Transform target;
     float stoppingDistance;
     NavMeshAgent agent;
+    Animator anim;
 
-    public GoToTarget(NavMeshAgent agent, Transform target, float stoppingDistance, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
+    public GoToTarget(NavMeshAgent agent, Transform target, float stoppingDistance, Animator anim, Conditions[] conditions, BehaviorTree BT) : base(conditions, BT)
     {
         this.agent = agent;
         this.target = target;
         this.stoppingDistance = stoppingDistance;
+        this.anim = anim;
     }
 
     public override void ExecuteAction()
     {
+        if (!EvaluateConditions())
+        {
+            FinishAction(false);
+            return;
+        }
+
+        BT.activeNode = this;
+
+        agent.speed = 50f;
+        agent.acceleration = 100f;
+        agent.angularSpeed = 1000f;
+        agent.autoBraking = false;
+
         agent.SetDestination(target.position);
-        base.ExecuteAction();
+        anim.SetBool("IsRunning", true);
     }
 
     public override void Tick(float deltaTime)
     {
-        if ((agent.transform.position - target.position).sqrMagnitude < stoppingDistance * stoppingDistance)
+        if (!agent.pathPending && agent.remainingDistance <= stoppingDistance)
         {
             FinishAction(true);
-        }
-        else
-        {
-            if (!agent.SetDestination(target.position))
-            {
-                FinishAction(false);
-            }
         }
     }
 
     public override void FinishAction(bool result)
     {
         agent.SetDestination(agent.transform.position);
+        anim.SetBool("IsRunning", false);
         base.FinishAction(result);
     }
 

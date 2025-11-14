@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RecolterTableau : MonoBehaviour
 {
@@ -7,23 +8,33 @@ public class RecolterTableau : MonoBehaviour
     [SerializeField] GameObject murSortie;
 
     int paintingCount = 0;
-    void Update()
-    {
-        Recolte();
-    }
 
-    public void Recolte()
+    public void Recolte(InputAction.CallbackContext context)
     {
+        if (context.phase != InputActionPhase.Started)
+            return;
 
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        if (playerCamera == null)
+        {
+            Debug.LogError("Player camera NOT assigned!");
+            return;
+        }
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Ray ray = playerCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, rayDistance))
         {
             if (hit.collider.CompareTag("Tableau"))
             {
-                paintingCount++;
-                if (paintingCount <= 8)
+                hit.collider.gameObject.SetActive(false);
+                if (paintingCount >= 8)
+                {
+                    Debug.Log("tout est recuperer");
                     murSortie.SetActive(false);
+                }
+                paintingCount++;
+                print(paintingCount);
             }
         }
     }

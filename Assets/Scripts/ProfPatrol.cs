@@ -5,6 +5,7 @@ public class BadPatrol : BehaviorTree
 {
     [SerializeField] Transform[] targets;
     [SerializeField] GameObject player;
+    [SerializeField] Animator anim;
 
     Interrupt interrupt;
 
@@ -24,13 +25,13 @@ public class BadPatrol : BehaviorTree
         HasVision HVPatrol = new HasVision(gameObject.transform, player, 45, 20, true);
 
         var wait = new Wait(2, new Conditions[] { HVPatrol }, this);
-        var goTo1 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] {HVPatrol}, this);
-        var goTo2 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] { HVPatrol }, this);
-        var goTo3 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] { HVPatrol }, this);
-        var goTo4 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] { HVPatrol }, this);
-        var goTo5 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, new Conditions[] { HVPatrol }, this);
+        var goTo1 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, anim, new Conditions[] {HVPatrol}, this);
+        var goTo2 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, anim, new Conditions[] { HVPatrol }, this);
+        var goTo3 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, anim, new Conditions[] { HVPatrol }, this);
+        var goTo4 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, anim, new Conditions[] { HVPatrol }, this);
+        var goTo5 = new GoToTarget(agent, targets[Random.Range(0, targets.Length)], 2, anim,new Conditions[] { HVPatrol }, this);
 
-        var chase = new GoToPlayer(agent, player.transform, 20, 4, 2 , new Conditions[] {HVChase, IRChase}, this);
+        var chase = new GoToPlayer(agent, player.transform, 20, 4, 2 , anim, new Conditions[] {HVChase, IRChase}, this);
         var attack = new Attack(Vector3.forward, Vector3.zero, new Vector3(1, 1, 1), player.tag, gameObject.transform, new Conditions[] {HVAttack, IRAttack}, this);
 
         var meleeSequence = new Sequence(new Node[] { chase, attack }, null, this);
