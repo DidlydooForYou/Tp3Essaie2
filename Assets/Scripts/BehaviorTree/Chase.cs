@@ -48,7 +48,6 @@ public class Chase : Node
             FinishAction(false);
             return;
         }
-        Debug.Log(agent.remainingDistance);
         if (!agent || !target)
         {
             FinishAction(false);

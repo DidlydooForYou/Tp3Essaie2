@@ -8031,6 +8031,9 @@ GameObject:
   - component: {fileID: 95576270095608858}
   - component: {fileID: -2854019102117287656}
   - component: {fileID: 3143119871390289302}
+  - component: {fileID: 5868640893868474416}
+  - component: {fileID: 3799183096408009555}
+  - component: {fileID: 1921422015671150906}
   m_Layer: 0
   m_Name: Nightmare Beetle
   m_TagString: Untagged
@@ -8115,8 +8118,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 3593589792392218230, guid: dd776516a0cad8146be39d0b41c48f51, type: 3}
   owner: {fileID: 1987720806421918}
+  firePoint: {fileID: 6939131912776435083}
   meleeAttackObject: {fileID: 7066689326610945622}
   rangedAttackObject: {fileID: 746161822385838458, guid: 59c4ffe10ee91714a8c21560771e593c, type: 3}
+  shockwaveAttackObject: {fileID: 7478731271839673279, guid: 4d3c8045dd8857a4b8d34c2361c61045, type: 3}
+--- !u!135 &5868640893868474416
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987720806421918}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.7757773
+  m_Center: {x: 0.03400135, y: 0.7803438, z: -0.073970675}
+--- !u!114 &3799183096408009555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987720806421918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd5afcad37138f4ba1565c9cb4f1be3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!54 &1921422015671150906
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987720806421918}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1819905211015288626
 GameObject:
   m_ObjectHideFlags: 0

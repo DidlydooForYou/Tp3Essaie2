@@ -17,6 +17,8 @@ public class RangedAttack : Node
 
     private float attackDuration = .5f;
     private float attackTimer = 0f;
+    private float cooldown = 1f;
+    private float nextUseTime = 0f;
 
     private float damage = 10f;
 
@@ -40,6 +42,14 @@ public class RangedAttack : Node
             FinishAction(false);
             return;
         }
+
+        if(Time.deltaTime > cooldown)
+        {
+            FinishAction(false);
+            return;
+        }
+
+        nextUseTime = Time.time + cooldown;
         isAttacking = true;
         attackTimer = attackDuration;
         var projectile = GameObject.Instantiate(attackObject, firePoint.position, firePoint.rotation);
@@ -67,7 +77,9 @@ public class RangedAttack : Node
         Vector3 to = target.position - owner.transform.position;
         to.y = 0f;
         if (to.sqrMagnitude > 0.001f)
+        {
             owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation, Quaternion.LookRotation(to), 10f * deltaTime);
+        }
 
         if (d < minAttackRange)
         {
