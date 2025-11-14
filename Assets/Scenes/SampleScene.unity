@@ -13556,7 +13556,12 @@ MonoBehaviour:
   - {fileID: 1718553273}
   - {fileID: 1965759147}
   player: {fileID: 348651104}
-  anim: {fileID: 0}
+  anim: {fileID: 1406275420}
+--- !u!95 &1406275420 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6102121146064585893, guid: 4cb42b9a376de2f468244fb92b31c11d, type: 3}
+  m_PrefabInstance: {fileID: 1406275409}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1406435745
 Mesh:
   m_ObjectHideFlags: 0
