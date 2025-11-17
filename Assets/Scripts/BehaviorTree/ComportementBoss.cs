@@ -44,7 +44,7 @@ public class ComportementBoss : BehaviorTree
         }
     }
 
-#if UNITY_EDITOR
+    //https://docs.unity3d.com/6000.2/Documentation/ScriptReference/MonoBehaviour.OnDrawGizmos.html
     private void OnDrawGizmos()
     {
 
@@ -65,6 +65,5 @@ public class ComportementBoss : BehaviorTree
         if (player != null)
             Gizmos.DrawLine(pos, player.transform.position);
     }
-#endif
 
 }

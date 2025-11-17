@@ -7,6 +7,7 @@ public class SanityUpdate : MonoBehaviour
     private float maxSanity = 100f;
     public float sanity = 100f;
     [SerializeField] Image barSanity;
+    [SerializeField] GameObject gameOverCanva;
 
     private void Start()
     {
@@ -35,6 +36,8 @@ public class SanityUpdate : MonoBehaviour
         sanity = Mathf.Clamp(sanity, 0, maxSanity);
         if (sanity <= 0)
         {
+            Time.timeScale = 0f;
+            gameOverCanva.SetActive(true);
             Debug.Log("You have lost your mind!");
         }
     }

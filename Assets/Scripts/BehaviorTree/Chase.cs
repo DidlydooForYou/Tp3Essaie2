@@ -43,7 +43,6 @@ public class Chase : Node
         float d = Vector3.Distance(agent.transform.position, target.position);
         if (d > maxChaseDistance)
         {
-            Debug.Log("out of bounds");
             agent.isStopped = true;
             FinishAction(false);
             return;
