@@ -39,7 +39,7 @@ public class BadPatrol : BehaviorTree
 
         root = new Selector(new Node[] { meleeSequence, patrolSquence }, null, this);
 
-        interrupt = new Interrupt(new Conditions[] { HVPatrol }, this);
+        //interrupt = new Interrupt(new Conditions[] { HVPatrol }, this);
         interrupt = new Interrupt( new Conditions[] {HVChase,IRChase,HVAttack, IRAttack} , this);
     }
 

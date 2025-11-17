@@ -14,12 +14,6 @@ public class RecolterTableau : MonoBehaviour
         if (context.phase != InputActionPhase.Started)
             return;
 
-        if (playerCamera == null)
-        {
-            Debug.LogError("Player camera NOT assigned!");
-            return;
-        }
-
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Ray ray = playerCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;
@@ -27,7 +21,8 @@ public class RecolterTableau : MonoBehaviour
         {
             if (hit.collider.CompareTag("Tableau"))
             {
-                hit.collider.gameObject.SetActive(false);
+                print("touche");
+                //hit.collider.gameObject.SetActive(false);
                 if (paintingCount >= 8)
                 {
                     Debug.Log("tout est recuperer");
