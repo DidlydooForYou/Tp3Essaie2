@@ -33,7 +33,7 @@ public class Teleport : Node
             return;
         }
 
-        Vector3 teleportPos = target.position - target.forward * offsetPlayer;
+        Vector3 teleportPos = target.position - target.forward * (offsetPlayer * 6);
 
         if (agent)
         {

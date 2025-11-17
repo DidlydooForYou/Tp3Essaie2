@@ -8,7 +8,7 @@ TagManager:
   - Ennemi
   - Tableau
   - Trap
-  - Boss
+  - TrapBoss
   layers:
   - Default
   - TransparentFX
